@@ -179,6 +179,7 @@
     </configuration>
   </component>
   <component name="SbtLocalSettings">
+    <option name="lastUpdateTimestamp" value="1460941021883" />
     <option name="availableProjects">
       <map>
         <entry>
@@ -206,7 +207,6 @@
     <option name="modificationStamps">
       <map>
         <entry key="$PROJECT_DIR$/../hello-scala" value="1460197983000" />
-        <entry key="$PROJECT_DIR$" value="1460199936000" />
       </map>
     </option>
     <option name="externalProjectsViewState">
