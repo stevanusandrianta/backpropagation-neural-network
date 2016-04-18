@@ -1,0 +1,31 @@
+New log file opened at Sat Apr 09 18:11:48 WIB 2016 by 8560@Stevanuss-MacBook-Pro.local
+Taking next connection to: 55371
+New client attempting to connect on port: 55372-55371
+  Address = /10.255.229.96:55371
+This client on port 55372 has uuid 84dd40ad-d891-4441-bcae-a7dd566c8681 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-84dd40ad-d891-4441-bcae-a7dd566c8681
+Taking next connection to: 55371
+New client attempting to connect on port: 55373-55371
+  Address = /10.255.229.96:55371
+Handshake exception on socket: 55373
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 55371
+New client attempting to connect on port: 55374-55371
+  Address = /10.255.229.96:55371
+This client on port 55374 has uuid 89e08668-b894-4717-af30-42be75e1d4d2 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-84dd40ad-d891-4441-bcae-a7dd566c8681, activator-89e08668-b894-4717-af30-42be75e1d4d2
+Taking next connection to: 55371
+Checking to see if clients are empty...
+No non-daemon clients connected after 3 min. Shutting down.
+Server socket thread exiting.
+0 clients open, will close them...
+All client sockets have been closed.
+Closing the 8560@Stevanuss-MacBook-Pro.local logs at Sat Apr 09 18:14:49 WIB 2016, goodbye.
