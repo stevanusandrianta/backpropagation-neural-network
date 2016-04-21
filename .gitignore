@@ -4,8 +4,5 @@
 /project/project/
 /project/target/
 /target/
-/.idea/
-/.sbtserver/
-/bin/
-/libexec/
-*.xml
+workspace.xml
+*.iws
