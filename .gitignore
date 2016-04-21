@@ -4,7 +4,7 @@
 /project/project/
 /project/target/
 /target/
-/.idea
-/.sbtserver
-/.bin
-/.libexec
+/.idea/
+/.sbtserver/
+/bin/
+/libexec/
