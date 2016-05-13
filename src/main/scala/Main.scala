@@ -791,10 +791,12 @@ object Main extends App {
     File.toFile(weight)
   }else{
     weight = File.fromFile(nInput, nHidden)
-    weight._1.foreach( item =>
-      print(item.mkString(","))
-    )
   }
+
+  val arr : Array[Int] = Array(2,2)
+
+  val network = NeuralNetwork.initiateNetwork(numericArray, learningRate, nInput, arr.toList, nOutput, 1000)
+
 
   val classified = numericArray.zipWithIndex.map { item =>
     println(s"expected : ${item._1.last}, prediction : ${BackPropagation.classifyBPNN(weight._1, weight._2, item._1)}")
