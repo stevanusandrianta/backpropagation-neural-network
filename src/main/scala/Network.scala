@@ -10,8 +10,8 @@ case class Perceptron(perceptronId: String = "perceptron")
 
 case class Layer(layerId: String, perceptron: List[Perceptron]){
 
-  private var nextLayer : Layer = null
-  private var prevLayer : Layer = null
+  var nextLayer : Layer = null
+  var prevLayer : Layer = null
 
   def setNextLayer(layer: Layer) = {
     this.nextLayer = layer
@@ -59,21 +59,28 @@ object NeuralNetwork {
     }
     outputLayer.setPreviousLayer(hiddenLayer.last)
 
-    var a : mutable.MutableList[Layer] = new mutable.MutableList[Layer]
-    a += inputLayer
-    hiddenLayer.foreach(layer => a += layer)
-    a += outputLayer
+    var layerList : mutable.MutableList[Layer] = new mutable.MutableList[Layer]
+    layerList += inputLayer
+    hiddenLayer.foreach(layer => layerList += layer)
+    layerList += outputLayer
 
     var network = Network("neuralNetwork", inputLayer, hiddenLayer, outputLayer)
-    a.zipWithIndex.foreach{ item =>
-      if(item._2 +1 != a.size){
+
+    layerList.zipWithIndex.foreach{ item =>
+      println(item._1.layerId)
+      if(item._2 +1 != layerList.size){
         item._1.perceptron.foreach{ from =>
-          a(item._2 + 1).perceptron.foreach{ to =>
+          println(from.perceptronId)
+          println(s"next ${item._1.nextLayer.layerId}")
+          item._1.nextLayer.perceptron.foreach{ to =>
+            println(to.perceptronId)
             network.addSynapses(from.perceptronId, to.perceptronId, 0)
           }
         }
       }
     }
+
+    //network
 
     //print synapsis
 

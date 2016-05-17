@@ -768,7 +768,7 @@ object Main extends App {
   val nInput = 4
   val nHidden = 5
   val nOutput = 1
-  val maxIter = 10000
+  val maxIter = 1000
 
   val array = text.split("\n").map(_.split(","))
   require(array.length > 0)
