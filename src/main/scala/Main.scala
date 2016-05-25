@@ -13,10 +13,12 @@ x5 -> true, false
 
 import java.io.{File, FileWriter, PrintWriter}
 import java.util
+import java.util.Calendar
 
 import BackPropagation._
 
 import scala.io.Source
+import scala.util.Random
 
 object File {
   def toFile(weight: (Array[Array[Double]], Array[Double])) = {
@@ -60,6 +62,9 @@ object File {
 }
 
 object Main extends App {
+
+
+  Random.setSeed(Calendar.getInstance().getTimeInMillis)
 
   val text =
     """
@@ -768,7 +773,7 @@ object Main extends App {
   val nInput = 4
   val nHidden = 5
   val nOutput = 1
-  val maxIter = 1000
+  val maxIter = 10000
 
   val array = text.split("\n").map(_.split(","))
   require(array.length > 0)
@@ -784,28 +789,43 @@ object Main extends App {
   ).toList
 
 
-  var weight = Tuple2.apply(Array.ofDim[Double](nHidden, nInput), Array.ofDim[Double](nHidden))
+  /*var weight = Tuple2.apply(Array.ofDim[Double](nHidden, nInput), Array.ofDim[Double](nHidden))
   val file = new File("weight.txt")
   if(!file.exists()) {
     weight = BackPropagation.trainBPNN(numericArray, learningRate, nInput, nHidden, nOutput, maxIter)
     File.toFile(weight)
   }else{
     weight = File.fromFile(nInput, nHidden)
+  }*/
+
+  val arr : Array[Int] = Array(4,4)
+  var network = NeuralNetwork.initiateNetwork(numericArray, learningRate, nInput, arr.toList, nOutput)
+
+  /*network.connections.foreach{ con =>
+    println(s"from ${con.fromId} to ${con.toId} weight ${con.weight}")
+  }*/
+
+  var trainedNetwork = network
+  val file = new File("weight.txt")
+  if(!file.exists()) {
+    trainedNetwork = NeuralNetwork.initiateTraining(network, numericArray, learningRate, maxIter, 1)
+    NeuralNetwork.saveNetwork(trainedNetwork)
+  }else{
+    trainedNetwork = NeuralNetwork.loadNetwork
   }
 
-  val arr : Array[Int] = Array(2,2)
-
-  val network = NeuralNetwork.initiateNetwork(numericArray, learningRate, nInput, arr.toList, nOutput, 1000)
-
+  println(trainedNetwork.outputLayer.perceptron.mkString(","))
+  println("trying to forward")
 
   val classified = numericArray.zipWithIndex.map { item =>
-    println(s"expected : ${item._1.last}, prediction : ${BackPropagation.classifyBPNN(weight._1, weight._2, item._1)}")
-    if (item._1.last == BackPropagation.classifyBPNN(weight._1, weight._2, item._1).round.toInt) true else false
+    println(s"expected : ${item._1.last}, prediction : ${NeuralNetwork.feedForward(trainedNetwork, item._1).head}")
+    if (item._1.last == NeuralNetwork.feedForward(trainedNetwork, item._1).head.round.toInt) true else false
   }
 
   println(s"correct classified : ${classified.count(_ == true)}")
   println(s"false classified : ${classified.count(_ == false)}")
   println(s"accuracy : ${(classified.count(_ == true).toDouble / classified.size.toDouble) * 100}%")
+
 
   //Validation.splitValidation(numericArray, 0.7, 0.05, 4, 5, 1)
   //Validation.crossValidation(numericArray, 4, 0.05, 4, 5, 1)
