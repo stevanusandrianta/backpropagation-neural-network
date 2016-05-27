@@ -4,6 +4,7 @@ import java.util.Calendar
 import jdk.internal.org.objectweb.asm.tree.MultiANewArrayInsnNode
 import jdk.nashorn.internal.ir.debug.JSONWriter
 
+import scala.collection.mutable
 import scala.collection.mutable._
 import scala.io.Source
 import scala.util.Random
@@ -264,8 +265,42 @@ object NeuralNetwork {
   }
 
   def loadNetwork = {
-    val text = Source.fromFile("weight.txt").getLines().toArray
-    val inputIndex = text.indexWhere(_ == "input")
+    val commandList = List("input", "hidden", "output", "synapsis")
+    var inputStr = new mutable.MutableList[String]
+    var hiddenStr = new mutable.MutableList[String]
+    var outputStr = new mutable.MutableList[String]
+    var synapsisStr = new mutable.MutableList[String]
+    var temp = ""
+    val text = Source.fromFile("weight.txt").getLines().foreach{ str =>
+      if(commandList.contains(str)){
+        temp = str
+      }
+      else{
+        temp match {
+          case "input" =>
+            inputStr :+ str.toList
+          case "hidden" =>
+            hiddenStr += str
+          case "output" =>
+            outputStr += str
+          case "synapsis" =>
+            synapsisStr += str
+        }
+      }
+    }
+
+    println(inputStr)
+    println(hiddenStr)
+    println(outputStr)
+    println(synapsisStr)
+
+    /*val inputPerceptrons : List[Perceptron] = inputStr.head.trim().split(",").map(Perceptron(_)).toList
+    val hiddenPerceptrons : List[List[Perceptron]] = hiddenStr.foreach{ str =>
+      str.trim().split(",").map(Perceptron(_)).toList
+    }
+    val outputPerceptrons : List[Perceptron] = outputStr.head.trim().split(",").map(Perceptron(_)).toList*/
+
+    /*val inputIndex = text.indexWhere(_ == "input")
     val hiddenIndex = text.indexWhere(_ == "hidden")
     val outputIndex = text.indexWhere(_ == "output")
     val synapsisIndex = text.indexWhere(_ == "synapsis")
@@ -274,9 +309,9 @@ object NeuralNetwork {
     val hiddenPerceptrons : List[List[Perceptron]] = (hiddenIndex+1 to outputIndex-1).map{index =>
       text(index).split(",").map(Perceptron(_)).toList
     }.toList
-    val outputPerceptrons : List[Perceptron] = text(outputIndex+1).split(",").toList.map(Perceptron(_))
+    val outputPerceptrons : List[Perceptron] = text(outputIndex+1).split(",").toList.map(Perceptron(_))*/
 
-    val synapsis : List[Connection] = (synapsisIndex+1 to text.size-1).map{index =>
+    /*val synapsis : List[Connection] = (synapsisIndex+1 to text.size-1).map{index =>
       var splittedStr = text(index).split(",")
       Connection(splittedStr(0), splittedStr(1), splittedStr(2).toDouble)
     }.toList
@@ -309,7 +344,7 @@ object NeuralNetwork {
       network.addConnection(con)
     }
 
-    network
+    network*/
 
   }
 
