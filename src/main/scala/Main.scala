@@ -769,11 +769,14 @@ object Main extends App {
       |897471,4,8,8,5,4,5,10,4,1,4
     """.stripMargin.trim
 
-  val learningRate = 0.05
-  val nInput = 4
+  val learningRate = 0.1
+  val nInput = 10
   val nHidden = 5
   val nOutput = 1
-  val maxIter = 10000
+  val maxIter = 1000
+
+  //network topology
+  val hiddenLayerNode : Array[Int] = Array(4)
 
   val array = text.split("\n").map(_.split(","))
   require(array.length > 0)
@@ -782,12 +785,16 @@ object Main extends App {
     index => array.map(_ (index)).distinct.zipWithIndex.toMap
   }
 
+  println(0.00 / 0.00)
+  zip.foreach{a => println(a)}
+
   val numericArray = array.map(ar =>
     ar.zipWithIndex.map(arr =>
-      (zip(arr._2).get(arr._1).get).toDouble / (zip(arr._2).last._2).toDouble
+        (zip(arr._2).get(arr._1).get).toDouble / (zip(arr._2).last._2).toDouble
     ).toList
   ).toList
 
+  numericArray(0).foreach{a => println(a)}
 
   /*var weight = Tuple2.apply(Array.ofDim[Double](nHidden, nInput), Array.ofDim[Double](nHidden))
   val file = new File("weight.txt")
@@ -798,8 +805,7 @@ object Main extends App {
     weight = File.fromFile(nInput, nHidden)
   }*/
 
-  val arr : Array[Int] = Array(4,4)
-  var network = NeuralNetwork.initiateNetwork(numericArray, learningRate, nInput, arr.toList, nOutput)
+  var network = NeuralNetwork.initiateNetwork(numericArray, learningRate, numericArray(0).size, hiddenLayerNode.toList, nOutput)
 
   /*network.connections.foreach{ con =>
     println(s"from ${con.fromId} to ${con.toId} weight ${con.weight}")
@@ -811,7 +817,8 @@ object Main extends App {
     trainedNetwork = NeuralNetwork.initiateTraining(network, numericArray, learningRate, maxIter, 1)
     NeuralNetwork.saveNetwork(trainedNetwork)
   }else{
-    trainedNetwork = NeuralNetwork.loadNetwork
+    NeuralNetwork.loadNetwork
+    //trainedNetwork = NeuralNetwork.loadNetwork
   }
 
   println(trainedNetwork.outputLayer.perceptron.mkString(","))
