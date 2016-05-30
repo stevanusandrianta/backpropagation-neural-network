@@ -20,47 +20,6 @@ import BackPropagation._
 import scala.io.Source
 import scala.util.Random
 
-object File {
-  def toFile(weight: (Array[Array[Double]], Array[Double])) = {
-    new FileWriter("weight.txt").flush()
-    weight._1.foreach(w =>
-      w.foreach { w1 =>
-        val out = new FileWriter("weight.txt", true)
-        out.write(s",${w1.toString}")
-        out.close()
-      }
-    )
-
-    val out = new FileWriter("weight.txt",true)
-    out.write("\n")
-    out.close()
-
-    weight._2.foreach { w =>
-      val out = new FileWriter("weight.txt", true)
-      out.write(s",${w.toString}")
-      out.close()
-    }
-  }
-
-  def fromFile(nInput: Int, nHidden: Int) = {
-
-    val text = Source.fromFile("weight.txt").getLines().toArray
-    val w1String = text(0).split(",")
-    println(w1String.size)
-    var w1 = Array.ofDim[Double](nHidden, nInput)
-    for (i <- 0 until nHidden) {
-      for (j <- 0 until nInput) {
-        w1(i)(j) = w1String(i*nInput + j + 1).toDouble
-      }
-    }
-    val w2String = text(1).split(",")
-    var w2 = Array.ofDim[Double](nHidden)
-    for (i <- 0 until nHidden) w2(i) = w2String(i + 1).toDouble
-
-    (w1, w2)
-  }
-}
-
 object Main extends App {
 
 
@@ -769,15 +728,6 @@ object Main extends App {
       |897471,4,8,8,5,4,5,10,4,1,4
     """.stripMargin.trim
 
-  val learningRate = 0.1
-  val nInput = 10
-  val nHidden = 5
-  val nOutput = 1
-  val maxIter = 1000
-
-  //network topology
-  val hiddenLayerNode : Array[Int] = Array(4)
-
   val array = text.split("\n").map(_.split(","))
   require(array.length > 0)
 
@@ -785,31 +735,19 @@ object Main extends App {
     index => array.map(_ (index)).distinct.zipWithIndex.toMap
   }
 
-  println(0.00 / 0.00)
-  zip.foreach{a => println(a)}
+  val numericArray = array.map{ar =>
+    ar.zipWithIndex.map{arr =>
+      (zip(arr._2).get(arr._1).get).toDouble / (zip(arr._2).maxBy(_._2)._2).toDouble
+    }.toList
+  }.toList
 
-  val numericArray = array.map(ar =>
-    ar.zipWithIndex.map(arr =>
-        (zip(arr._2).get(arr._1).get).toDouble / (zip(arr._2).last._2).toDouble
-    ).toList
-  ).toList
+  val learningRate = 0.05
+  val nInput = numericArray(0).size
+  val nHidden : List[Int] = Array(3,3).toList
+  val nOutput = 1
+  val maxIter = 1000
 
-  numericArray(0).foreach{a => println(a)}
-
-  /*var weight = Tuple2.apply(Array.ofDim[Double](nHidden, nInput), Array.ofDim[Double](nHidden))
-  val file = new File("weight.txt")
-  if(!file.exists()) {
-    weight = BackPropagation.trainBPNN(numericArray, learningRate, nInput, nHidden, nOutput, maxIter)
-    File.toFile(weight)
-  }else{
-    weight = File.fromFile(nInput, nHidden)
-  }*/
-
-  var network = NeuralNetwork.initiateNetwork(numericArray, learningRate, numericArray(0).size, hiddenLayerNode.toList, nOutput)
-
-  /*network.connections.foreach{ con =>
-    println(s"from ${con.fromId} to ${con.toId} weight ${con.weight}")
-  }*/
+  var network = NeuralNetwork.initiateNetwork(numericArray, learningRate, nInput, nHidden, nOutput)
 
   var trainedNetwork = network
   val file = new File("weight.txt")
@@ -817,8 +755,7 @@ object Main extends App {
     trainedNetwork = NeuralNetwork.initiateTraining(network, numericArray, learningRate, maxIter, 1)
     NeuralNetwork.saveNetwork(trainedNetwork)
   }else{
-    NeuralNetwork.loadNetwork
-    //trainedNetwork = NeuralNetwork.loadNetwork
+    trainedNetwork = NeuralNetwork.loadNetwork
   }
 
   println(trainedNetwork.outputLayer.perceptron.mkString(","))
