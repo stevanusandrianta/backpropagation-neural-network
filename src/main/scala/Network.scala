@@ -162,7 +162,6 @@ object NeuralNetwork {
 
     (0 to maxIteration).foreach { iter =>
       dataInput.foreach { data =>
-
         var flag = data.last
 
         //INITIATE TO INPUT LAYER
@@ -267,12 +266,12 @@ object NeuralNetwork {
 
   def loadNetwork = {
     val commandList = List("input", "hidden", "output", "synapsis")
+    //val text = Source.fromFile("weight.txt").getLines().toList
 
-
-    var inputStr = new mutable.MutableList[String]
-    var hiddenStr = new mutable.MutableList[String]
-    var outputStr = new mutable.MutableList[String]
-    var synapsisStr = new mutable.MutableList[String]
+    var inputStr = new MutableList[String]
+    var hiddenStr = new MutableList[String]
+    var outputStr = new MutableList[String]
+    var synapsisStr = new MutableList[String]
     var temp = ""
     val text = Source.fromFile("weight.txt").getLines().foreach{ str =>
       if(commandList.contains(str)){
@@ -297,20 +296,19 @@ object NeuralNetwork {
     println(outputStr)
     println(synapsisStr)
 
-    /*val inputPerceptrons : List[Perceptron] = inputStr.head.trim().split(",").map(Perceptron(_)).toList
-    val hiddenPerceptrons : List[List[Perceptron]] = hiddenStr.foreach{ str =>
-      str.trim().split(",").map(Perceptron(_)).toList
-    }
+    val inputPerceptrons : List[Perceptron] = inputStr.head.trim().split(",").map(Perceptron(_)).toList
+    val hiddenPerceptrons : List[List[Perceptron]] = hiddenStr.map{ str =>
+      str.split(",").map(Perceptron(_)).toList
+    }.toList
     val outputPerceptrons : List[Perceptron] = outputStr.head.trim().split(",").map(Perceptron(_)).toList
-
-    val synapsis : List[Connection] = (synapsisIndex+1 to text.size-1).map{index =>
-      var splittedStr = text(index).split(",")
+    val synapsis : List[Connection] = synapsisStr.map{ str =>
+      val splittedStr = str.split(",")
       Connection(splittedStr(0), splittedStr(1), splittedStr(2).toDouble)
-    }.toList*/
+    }.toList
+
 
     /*
-    val text = Source.fromFile("weight.txt").getLines().toList
-
+    //WITHOUT TOKENIZER
     val inputIndex = text.indexWhere(_ == "input")
     val hiddenIndex = text.indexWhere(_ == "hidden")
     val outputIndex = text.indexWhere(_ == "output")
@@ -328,8 +326,6 @@ object NeuralNetwork {
     }.toList
     */
 
-
-    /*
     var hiddenLayer = hiddenPerceptrons.zipWithIndex.map{ perceptronList =>
       new Layer(s"hidden_layer_${perceptronList._2}", perceptronList._1)
     }
@@ -358,7 +354,7 @@ object NeuralNetwork {
       network.addConnection(con)
     }
 
-    network*/
+    network
 
   }
 
