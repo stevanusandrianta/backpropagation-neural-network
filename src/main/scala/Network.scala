@@ -40,37 +40,36 @@ case class Layer(layerId: String, perceptron: List[Perceptron]) {
   var nextLayerId = ""
   var prevLayerId = ""
 
-  @JsonIgnore
-  var nextLayer: Layer = null
-
-  @JsonIgnore
-  var prevLayer: Layer = null
-
-  def setNextLayer(layer: Layer) = {
-    this.nextLayer = layer
+  def setNextLayer(layer: String) = {
+    this.nextLayerId = layer
   }
 
-  def setPreviousLayer(layer: Layer) = {
-    this.prevLayer = layer
+  def setPreviousLayer(layer: String) = {
+    this.prevLayerId = layer
   }
+
+  lazy val indexedPerceptron = perceptron.zipWithIndex
+  def getPerceptronsWithIndex = indexedPerceptron
 
 }
 
 case class Network(networkId: String, inputLayer: Layer, hiddenLayer: List[Layer], outputLayer: Layer) {
 
-  var layerList = new mutable.HashMap[String, Layer]()
-  def getLayerById(layerId: String) = layerList.get(layerId)
+  //private lazy val layerList = inputLayer :: outputLayer :: hiddenLayer
+  private lazy val orderedLayer = List.concat(List(inputLayer), hiddenLayer, List(outputLayer))
+  private lazy val layerListMap = orderedLayer.map(i => i.layerId -> i).toMap
+
+  def getLayerById(layerId: String) = layerListMap(layerId)
+
+  private lazy val synapsisMap = connections.map(a => (a.fromId + "_" + a.toId) -> a).toMap
+
+  def getConnection(from: String, to: String) =
+    synapsisMap.get(from + "_" + to).getOrElse(synapsisMap.get(to + "_" + from).get)
 
   var connections: MutableList[Synapsis] = new MutableList[Synapsis]
 
   def addConnection(connection: Synapsis) = {
     connections += connection
-  }
-
-  def getConnection(from: String, to: String): Synapsis = {
-    connections.find(con => (con.fromId == from && con.toId == to)).getOrElse(
-      connections.find(con => (con.fromId == to && con.toId == from)).get
-    )
   }
 
 }
@@ -86,59 +85,55 @@ object NeuralNetwork {
 
     //INITIATE LAYER AND PERCEPTRON
     var hiddenLayer = nHidden.zipWithIndex.map { item =>
-      new Layer(s"hidden_layer_${item._2}", (0 to item._1).zipWithIndex.map { counter =>
-        if (counter._2 != item._1) {
-          Perceptron(s"hidden_perceptron_${item._2}_${counter._2}")
+      new Layer(s"hidden_layer_${item._2}", (0 to item._1).map { counter =>
+        if (counter != item._1) {
+          Perceptron(s"hidden_perceptron_${item._2}_${counter}")
         } else {
           Perceptron(s"hidden_bias_${item._2}", 1.00)
         }
       }.toList)
     }
 
-    var inputLayer = new Layer("input", (0 to nInput).zipWithIndex.map { item =>
-      if (item._2 != nInput) {
-        Perceptron(s"input_perceptron_${item._2}")
+    var inputLayer = new Layer("input_layer", (0 to nInput).map { counter =>
+      if (counter != nInput) {
+        Perceptron(s"input_perceptron_${counter}")
       } else {
         Perceptron("input_bias", 1.00)
       }
     }.toList)
 
-    var outputLayer = new Layer("output", (0 until nOutput).zipWithIndex.map { item =>
-      Perceptron(s"output_perceptron_${item._2}")
+    var outputLayer = new Layer("output_layer", (0 until nOutput).map { counter =>
+      Perceptron(s"output_perceptron_${counter}")
     }.toList)
 
     //SETUP LAYERING NETWORK
-    inputLayer.nextLayer = hiddenLayer.head
+    inputLayer.setNextLayer(hiddenLayer.head.layerId)
     hiddenLayer.zipWithIndex.foreach { layer =>
       if (hiddenLayer.size == 1) {
-        layer._1.setNextLayer(outputLayer)
-        layer._1.setPreviousLayer(inputLayer)
+        layer._1.setNextLayer(outputLayer.layerId)
+        layer._1.setPreviousLayer(inputLayer.layerId)
       } else if (layer._2 == 0) {
-        layer._1.setNextLayer(hiddenLayer(layer._2 + 1))
-        layer._1.setPreviousLayer(inputLayer)
+        layer._1.setNextLayer(hiddenLayer(layer._2 + 1).layerId)
+        layer._1.setPreviousLayer(inputLayer.layerId)
       }
       else {
-        layer._1.setNextLayer(outputLayer)
-        layer._1.setPreviousLayer(hiddenLayer(layer._2 - 1))
+        layer._1.setNextLayer(outputLayer.layerId)
+        layer._1.setPreviousLayer(hiddenLayer(layer._2 - 1).layerId)
       }
     }
-    outputLayer.setPreviousLayer(hiddenLayer.last)
+    outputLayer.setPreviousLayer(hiddenLayer.last.layerId)
 
     var network = Network("neuralNetwork", inputLayer, hiddenLayer, outputLayer)
 
     //COMBINING ALL LAYER
-    var layerList: MutableList[Layer] = new MutableList[Layer]
-    layerList += inputLayer
-    hiddenLayer.foreach(layer => layerList += layer)
-    layerList += outputLayer
+    val layerList = List.concat(List(inputLayer), hiddenLayer, List(outputLayer))
 
     //ADD CONNECTION TO NETWORK
-    layerList.zipWithIndex.foreach { item =>
-      if (item._2 + 1 != layerList.size) {
-        item._1.perceptron.foreach { perceptronFrom =>
-          item._1.nextLayer.perceptron.foreach { perceptronTo =>
-            network.addConnection(new Synapsis(perceptronFrom.perceptronId, perceptronTo.perceptronId, lib.generateWeight))
-          }
+    layerList.filterNot(_ == layerList.last).foreach { layer =>
+      layer.perceptron.foreach { perceptronFrom =>
+        val nextLayer = network.getLayerById(layer.nextLayerId)
+        nextLayer.perceptron.foreach { perceptronTo =>
+          network.addConnection(new Synapsis(perceptronFrom.perceptronId, perceptronTo.perceptronId, lib.generateWeight))
         }
       }
     }
@@ -152,7 +147,7 @@ object NeuralNetwork {
     var flag = dataInput.last
 
     //INITIATE TO INPUT LAYER
-    network.inputLayer.perceptron.zipWithIndex.foreach { item =>
+    network.inputLayer.getPerceptronsWithIndex.foreach { item =>
       if (!item._1.perceptronId.contains("bias"))
         item._1.activation = dataInput(item._2)
     }
@@ -161,9 +156,11 @@ object NeuralNetwork {
     network.hiddenLayer.foreach { layer =>
       layer.perceptron.foreach { perceptron =>
         if (!perceptron.perceptronId.contains("bias")) {
-          perceptron.activation = lib.sigmoid(layer.prevLayer.perceptron.foldLeft(0.0) {
+          var prevLayer = network.getLayerById(layer.prevLayerId)
+          var newValue = lib.sigmoid(prevLayer.perceptron.foldLeft(0.0) {
             (a, b) => a + b.activation * network.getConnection(b.perceptronId, perceptron.perceptronId).weight
           })
+          perceptron.activation = newValue
         }
       }
     }
@@ -188,7 +185,7 @@ object NeuralNetwork {
         var flag = data.last
 
         //INITIATE TO INPUT LAYER
-        network.inputLayer.perceptron.zipWithIndex.foreach { item =>
+        network.inputLayer.getPerceptronsWithIndex.foreach { item =>
           if (!item._1.perceptronId.contains("bias"))
             item._1.activation = data(item._2)
         }
@@ -197,7 +194,8 @@ object NeuralNetwork {
         network.hiddenLayer.foreach { layer =>
           layer.perceptron.foreach { perceptron =>
             if (!perceptron.perceptronId.contains("bias")) {
-              perceptron.activation = lib.sigmoid(layer.prevLayer.perceptron.foldLeft(0.0) {
+              var prevLayer = network.getLayerById(layer.prevLayerId)
+              perceptron.activation = lib.sigmoid(prevLayer.perceptron.foldLeft(0.0) {
                 (a, b) => a + b.activation * network.getConnection(b.perceptronId, perceptron.perceptronId).weight
               })
             }
@@ -219,8 +217,9 @@ object NeuralNetwork {
         //COUNT ERROR IN HIDDEN
         network.hiddenLayer.reverse.foreach { layer =>
           layer.perceptron.foreach { perceptron =>
+            var nextLayer = network.getLayerById(layer.nextLayerId)
             var sumWeightMultipllyError =
-              perceptron.error = perceptron.activation * (1 - perceptron.activation) * layer.nextLayer.perceptron.foldLeft(0.0) {
+              perceptron.error = perceptron.activation * (1 - perceptron.activation) * nextLayer.perceptron.foldLeft(0.0) {
                 (a, b) => a + (b.error * network.getConnection(b.perceptronId, perceptron.perceptronId).weight)
               }
           }
@@ -228,7 +227,8 @@ object NeuralNetwork {
 
         //ADJUST THE WEIGHT INPUT TO HIDDEN
         network.inputLayer.perceptron.foreach { fromPerceptron =>
-          network.inputLayer.nextLayer.perceptron.foreach { toPerceptron =>
+          var nextLayer = network.getLayerById(network.inputLayer.nextLayerId)
+          nextLayer.perceptron.foreach { toPerceptron =>
             var connection = network.getConnection(fromPerceptron.perceptronId, toPerceptron.perceptronId)
             var deltaWeight = learningRate * toPerceptron.error * fromPerceptron.activation
             connection.weight = connection.weight + deltaWeight + momentum * connection.lastDeltaWeight
@@ -238,8 +238,9 @@ object NeuralNetwork {
 
         //ADJUST THE WEIGHT FOR EACH HIDDEN TO OUTPUT
         network.hiddenLayer.foreach { layer =>
+          var nextLayer = network.getLayerById(layer.nextLayerId)
           layer.perceptron.foreach { fromPerceptron =>
-            layer.nextLayer.perceptron.foreach { toPerceptron =>
+            nextLayer.perceptron.foreach { toPerceptron =>
               var connection = network.getConnection(fromPerceptron.perceptronId, toPerceptron.perceptronId)
               var deltaWeight = learningRate * toPerceptron.error * fromPerceptron.activation
               connection.weight = connection.weight + deltaWeight + momentum * connection.lastDeltaWeight
@@ -267,27 +268,6 @@ object NeuralNetwork {
 
     new FileWriter("weight.json").flush()
     val out = new FileWriter("weight.json", true)
-    /*out.write("input\n")
-    network.inputLayer.perceptron.foreach { p =>
-      if (p != network.inputLayer.perceptron.last) out.write(s"${p.perceptronId},")
-      else out.write(s"${p.perceptronId}\n")
-    }
-    out.write("hidden\n")
-    network.hiddenLayer.foreach { layer =>
-      layer.perceptron.foreach { p =>
-        if (p != layer.perceptron.last) out.write(s"${p.perceptronId},")
-        else out.write(s"${p.perceptronId}\n")
-      }
-    }
-    out.write("output\n")
-    network.outputLayer.perceptron.foreach { p =>
-      if (p != network.outputLayer.perceptron.last) out.write(s"${p.perceptronId},")
-      else out.write(s"${p.perceptronId}\n")
-    }
-    out.write("synapsis\n")
-    network.connections.foreach { con =>
-      out.write(s"${con.fromId},${con.toId},${con.weight}\n")
-    }*/
 
     val mapper = new ObjectMapper()
     mapper.registerModule(DefaultScalaModule)
@@ -302,91 +282,11 @@ object NeuralNetwork {
   }
 
   def loadNetwork = {
-    /*val commandList = List("input", "hidden", "output", "synapsis")
-    //val text = Source.fromFile("weight.txt").getLines().toList
-
-    var inputStr = new MutableList[String]
-    var hiddenStr = new MutableList[String]
-    var outputStr = new MutableList[String]
-    var synapsisStr = new MutableList[String]
-    var temp = ""
-    val text = Source.fromFile("weight.txt").getLines().foreach { str =>
-      if (commandList.contains(str)) {
-        temp = str
-      }
-      else {
-        temp match {
-          case "input" =>
-            inputStr += str
-          case "hidden" =>
-            hiddenStr += str
-          case "output" =>
-            outputStr += str
-          case "synapsis" =>
-            synapsisStr += str
-        }
-      }
-    }
-    
-    val inputPerceptrons: List[Perceptron] = inputStr.head.trim().split(",").map(Perceptron(_)).toList
-    val hiddenPerceptrons: List[List[Perceptron]] = hiddenStr.map { str =>
-      str.split(",").map(Perceptron(_)).toList
-    }.toList
-    val outputPerceptrons: List[Perceptron] = outputStr.head.trim().split(",").map(Perceptron(_)).toList
-    val synapsis: List[Connection] = synapsisStr.map { str =>
-      val splittedStr = str.split(",")
-      Connection(splittedStr(0), splittedStr(1), splittedStr(2).toDouble)
-    }.toList
-
-    var hiddenLayer = hiddenPerceptrons.zipWithIndex.map { perceptronList =>
-      new Layer(s"hidden_layer_${perceptronList._2}", perceptronList._1)
-    }
-    var inputLayer = new Layer("input", inputPerceptrons)
-    var outputLayer = new Layer("output", outputPerceptrons)
-
-    inputLayer.nextLayer = hiddenLayer.head
-    hiddenLayer.zipWithIndex.foreach { layer =>
-      if (hiddenLayer.size == 1) {
-        layer._1.setNextLayer(outputLayer)
-        layer._1.setPreviousLayer(inputLayer)
-      } else if (layer._2 == 0) {
-        layer._1.setNextLayer(hiddenLayer(layer._2 + 1))
-        layer._1.setPreviousLayer(inputLayer)
-      }
-      else {
-        layer._1.setNextLayer(outputLayer)
-        layer._1.setPreviousLayer(hiddenLayer(layer._2 - 1))
-      }
-    }
-    outputLayer.setPreviousLayer(hiddenLayer.last)
-
-    var network = Network("neuralNetwork", inputLayer, hiddenLayer, outputLayer)
-    synapsis.foreach { con =>
-      network.addConnection(con)
-    }*/
 
     val mapper = new ObjectMapper()
     mapper.registerModule(DefaultScalaModule)
 
-    var network = mapper.readValue(new FileReader("weight.json"),classOf[Network])
-
-    network.inputLayer.nextLayer = network.hiddenLayer.head
-    network.hiddenLayer.zipWithIndex.foreach { layer =>
-      if (network.hiddenLayer.size == 1) {
-        layer._1.setNextLayer(network.outputLayer)
-        layer._1.setPreviousLayer(network.inputLayer)
-      } else if (layer._2 == 0) {
-        layer._1.setNextLayer(network.hiddenLayer(layer._2 + 1))
-        layer._1.setPreviousLayer(network.inputLayer)
-      }
-      else {
-        layer._1.setNextLayer(network.outputLayer)
-        layer._1.setPreviousLayer(network.hiddenLayer(layer._2 - 1))
-      }
-    }
-    network.outputLayer.setPreviousLayer(network.hiddenLayer.last)
-
-    network
+    mapper.readValue(new FileReader("weight.json"), classOf[Network])
 
   }
 
