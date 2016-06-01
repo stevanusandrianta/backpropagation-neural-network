@@ -20,6 +20,47 @@ import BackPropagation._
 import scala.io.Source
 import scala.util.Random
 
+object File {
+  def toFile(weight: (Array[Array[Double]], Array[Double])) = {
+    new FileWriter("weight.txt").flush()
+    weight._1.foreach(w =>
+      w.foreach { w1 =>
+        val out = new FileWriter("weight.txt", true)
+        out.write(s",${w1.toString}")
+        out.close()
+      }
+    )
+
+    val out = new FileWriter("weight.txt",true)
+    out.write("\n")
+    out.close()
+
+    weight._2.foreach { w =>
+      val out = new FileWriter("weight.txt", true)
+      out.write(s",${w.toString}")
+      out.close()
+    }
+  }
+
+  def fromFile(nInput: Int, nHidden: Int) = {
+
+    val text = Source.fromFile("weight.txt").getLines().toArray
+    val w1String = text(0).split(",")
+    println(w1String.size)
+    var w1 = Array.ofDim[Double](nHidden, nInput)
+    for (i <- 0 until nHidden) {
+      for (j <- 0 until nInput) {
+        w1(i)(j) = w1String(i*nInput + j + 1).toDouble
+      }
+    }
+    val w2String = text(1).split(",")
+    var w2 = Array.ofDim[Double](nHidden)
+    for (i <- 0 until nHidden) w2(i) = w2String(i + 1).toDouble
+
+    (w1, w2)
+  }
+}
+
 object Main extends App {
 
 
@@ -742,9 +783,10 @@ object Main extends App {
   }.toList
 
   val learningRate = 0.05
-  val nInput = numericArray(0).size
-  val nHidden : List[Int] = Array(3,3).toList
+  val nInput = numericArray(0).size - 1
+  val nHidden : List[Int] = Array(4).toList
   val nOutput = 1
+  val momentum = 0.5
   val maxIter = 1000
 
   var network = NeuralNetwork.initiateNetwork(numericArray, learningRate, nInput, nHidden, nOutput)
@@ -752,7 +794,7 @@ object Main extends App {
   var trainedNetwork = network
   val file = new File("weight.txt")
   if(!file.exists()) {
-    trainedNetwork = NeuralNetwork.initiateTraining(network, numericArray, learningRate, maxIter, 1)
+    trainedNetwork = NeuralNetwork.initiateTraining(network, numericArray, learningRate, momentum, maxIter, 1)
     NeuralNetwork.saveNetwork(trainedNetwork)
   }else{
     trainedNetwork = NeuralNetwork.loadNetwork
