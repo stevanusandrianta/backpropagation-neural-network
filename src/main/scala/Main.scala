@@ -2,16 +2,7 @@
   * Created by stevanusandrianta on 4/21/16.
   */
 
-/*
-play scala dataset
-x1 -> yes, no
-x2 -> sunny, overcast, rainy
-x3 -> hot, mild, cold
-x4 -> hight normal
-x5 -> true, false
- */
-
-import java.io.{File, FileWriter, PrintWriter}
+import java.io.{File, FileWriter, PrintWriter, StringWriter}
 import java.util
 import java.util.Calendar
 
@@ -19,50 +10,11 @@ import BackPropagation._
 
 import scala.io.Source
 import scala.util.Random
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
 
-object File {
-  def toFile(weight: (Array[Array[Double]], Array[Double])) = {
-    new FileWriter("weight.txt").flush()
-    weight._1.foreach(w =>
-      w.foreach { w1 =>
-        val out = new FileWriter("weight.txt", true)
-        out.write(s",${w1.toString}")
-        out.close()
-      }
-    )
-
-    val out = new FileWriter("weight.txt",true)
-    out.write("\n")
-    out.close()
-
-    weight._2.foreach { w =>
-      val out = new FileWriter("weight.txt", true)
-      out.write(s",${w.toString}")
-      out.close()
-    }
-  }
-
-  def fromFile(nInput: Int, nHidden: Int) = {
-
-    val text = Source.fromFile("weight.txt").getLines().toArray
-    val w1String = text(0).split(",")
-    println(w1String.size)
-    var w1 = Array.ofDim[Double](nHidden, nInput)
-    for (i <- 0 until nHidden) {
-      for (j <- 0 until nInput) {
-        w1(i)(j) = w1String(i*nInput + j + 1).toDouble
-      }
-    }
-    val w2String = text(1).split(",")
-    var w2 = Array.ofDim[Double](nHidden)
-    for (i <- 0 until nHidden) w2(i) = w2String(i + 1).toDouble
-
-    (w1, w2)
-  }
-}
 
 object Main extends App {
-
 
   Random.setSeed(Calendar.getInstance().getTimeInMillis)
 
@@ -786,23 +738,20 @@ object Main extends App {
   val nInput = numericArray(0).size - 1
   val nHidden : List[Int] = Array(4).toList
   val nOutput = 1
-  val momentum = 0.5
-  val maxIter = 1000
+  val momentum = 0.9
+  val maxIter = 10
 
   var network = NeuralNetwork.initiateNetwork(numericArray, learningRate, nInput, nHidden, nOutput)
 
   var trainedNetwork = network
-  val file = new File("weight.txt")
+  val file = new File("weight.json")
   if(!file.exists()) {
     trainedNetwork = NeuralNetwork.initiateTraining(network, numericArray, learningRate, momentum, maxIter, 1)
     NeuralNetwork.saveNetwork(trainedNetwork)
   }else{
     trainedNetwork = NeuralNetwork.loadNetwork
   }
-
-  println(trainedNetwork.outputLayer.perceptron.mkString(","))
-  println("trying to forward")
-
+  
   val classified = numericArray.zipWithIndex.map { item =>
     println(s"expected : ${item._1.last}, prediction : ${NeuralNetwork.feedForward(trainedNetwork, item._1).head}")
     if (item._1.last == NeuralNetwork.feedForward(trainedNetwork, item._1).head.round.toInt) true else false
