@@ -1,6 +1,7 @@
-import java.io.{DataInput, FileWriter}
+import java.io.{DataInput, FileReader, FileWriter, StringWriter}
 import java.util.Calendar
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jdk.internal.org.objectweb.asm.tree.MultiANewArrayInsnNode
 import jdk.nashorn.internal.ir.debug.JSONWriter
 
@@ -8,6 +9,8 @@ import scala.collection.mutable
 import scala.collection.mutable._
 import scala.io.Source
 import scala.util.Random
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
 
 /**
   * Created by stevanusandrianta on 5/12/16.
@@ -34,7 +37,13 @@ case class Perceptron(perceptronId: String = "perceptron", var activation: Doubl
 
 case class Layer(layerId: String, perceptron: List[Perceptron]) {
 
+  var nextLayerId = ""
+  var prevLayerId = ""
+
+  @JsonIgnore
   var nextLayer: Layer = null
+
+  @JsonIgnore
   var prevLayer: Layer = null
 
   def setNextLayer(layer: Layer) = {
@@ -49,13 +58,16 @@ case class Layer(layerId: String, perceptron: List[Perceptron]) {
 
 case class Network(networkId: String, inputLayer: Layer, hiddenLayer: List[Layer], outputLayer: Layer) {
 
-  var connections: MutableList[Connection] = new MutableList[Connection]
+  var layerList = new mutable.HashMap[String, Layer]()
+  def getLayerById(layerId: String) = layerList.get(layerId)
 
-  def addConnection(connection: Connection) = {
+  var connections: MutableList[Synapsis] = new MutableList[Synapsis]
+
+  def addConnection(connection: Synapsis) = {
     connections += connection
   }
 
-  def getConnection(from: String, to: String): Connection = {
+  def getConnection(from: String, to: String): Synapsis = {
     connections.find(con => (con.fromId == from && con.toId == to)).getOrElse(
       connections.find(con => (con.fromId == to && con.toId == from)).get
     )
@@ -63,7 +75,7 @@ case class Network(networkId: String, inputLayer: Layer, hiddenLayer: List[Layer
 
 }
 
-case class Connection(fromId: String, toId: String, var weight: Double, var lastDeltaWeight: Double = 0.00)
+case class Synapsis(fromId: String, toId: String, var weight: Double, var lastDeltaWeight: Double = 0.00)
 
 object NeuralNetwork {
 
@@ -125,12 +137,11 @@ object NeuralNetwork {
       if (item._2 + 1 != layerList.size) {
         item._1.perceptron.foreach { perceptronFrom =>
           item._1.nextLayer.perceptron.foreach { perceptronTo =>
-            network.addConnection(new Connection(perceptronFrom.perceptronId, perceptronTo.perceptronId, lib.generateWeight))
+            network.addConnection(new Synapsis(perceptronFrom.perceptronId, perceptronTo.perceptronId, lib.generateWeight))
           }
         }
       }
     }
-
 
     //RETURN THE NETWORK
     network
@@ -218,11 +229,8 @@ object NeuralNetwork {
         //ADJUST THE WEIGHT INPUT TO HIDDEN
         network.inputLayer.perceptron.foreach { fromPerceptron =>
           network.inputLayer.nextLayer.perceptron.foreach { toPerceptron =>
-            /*var weight = network.getConnection(fromPerceptron.perceptronId, toPerceptron.perceptronId).weight
-            network.getConnection(fromPerceptron.perceptronId, toPerceptron.perceptronId).weight =
-              weight + learningRate * toPerceptron.error * fromPerceptron.activation*/
             var connection = network.getConnection(fromPerceptron.perceptronId, toPerceptron.perceptronId)
-            val deltaWeight = learningRate * toPerceptron.error * fromPerceptron.activation
+            var deltaWeight = learningRate * toPerceptron.error * fromPerceptron.activation
             connection.weight = connection.weight + deltaWeight + momentum * connection.lastDeltaWeight
             connection.lastDeltaWeight = deltaWeight
           }
@@ -232,11 +240,8 @@ object NeuralNetwork {
         network.hiddenLayer.foreach { layer =>
           layer.perceptron.foreach { fromPerceptron =>
             layer.nextLayer.perceptron.foreach { toPerceptron =>
-              /*var weight = network.getConnection(fromPerceptron.perceptronId, toPerceptron.perceptronId).weight
-              network.getConnection(fromPerceptron.perceptronId, toPerceptron.perceptronId).weight =
-                weight + learningRate * toPerceptron.error * fromPerceptron.activation*/
               var connection = network.getConnection(fromPerceptron.perceptronId, toPerceptron.perceptronId)
-              val deltaWeight = learningRate * toPerceptron.error * fromPerceptron.activation
+              var deltaWeight = learningRate * toPerceptron.error * fromPerceptron.activation
               connection.weight = connection.weight + deltaWeight + momentum * connection.lastDeltaWeight
               connection.lastDeltaWeight = deltaWeight
             }
@@ -255,15 +260,14 @@ object NeuralNetwork {
 
     }
 
-
     network
   }
 
   def saveNetwork(network: Network) = {
 
-    new FileWriter("weight.txt").flush()
-    val out = new FileWriter("weight.txt", true)
-    out.write("input\n")
+    new FileWriter("weight.json").flush()
+    val out = new FileWriter("weight.json", true)
+    /*out.write("input\n")
     network.inputLayer.perceptron.foreach { p =>
       if (p != network.inputLayer.perceptron.last) out.write(s"${p.perceptronId},")
       else out.write(s"${p.perceptronId}\n")
@@ -283,13 +287,22 @@ object NeuralNetwork {
     out.write("synapsis\n")
     network.connections.foreach { con =>
       out.write(s"${con.fromId},${con.toId},${con.weight}\n")
-    }
+    }*/
+
+    val mapper = new ObjectMapper()
+    mapper.registerModule(DefaultScalaModule)
+
+    val stringWriter = new StringWriter
+    mapper.writeValue(stringWriter, network)
+    val json = stringWriter.toString
+
+    out.write(json)
     out.close()
 
   }
 
   def loadNetwork = {
-    val commandList = List("input", "hidden", "output", "synapsis")
+    /*val commandList = List("input", "hidden", "output", "synapsis")
     //val text = Source.fromFile("weight.txt").getLines().toList
 
     var inputStr = new MutableList[String]
@@ -325,26 +338,6 @@ object NeuralNetwork {
       Connection(splittedStr(0), splittedStr(1), splittedStr(2).toDouble)
     }.toList
 
-
-    /*
-    //WITHOUT TOKENIZER
-    val inputIndex = text.indexWhere(_ == "input")
-    val hiddenIndex = text.indexWhere(_ == "hidden")
-    val outputIndex = text.indexWhere(_ == "output")
-    val synapsisIndex = text.indexWhere(_ == "synapsis")
-
-    val inputPerceptrons : List[Perceptron] = text(inputIndex+1).split(",").toList.map(Perceptron(_))
-    val hiddenPerceptrons : List[List[Perceptron]] = (hiddenIndex+1 to outputIndex-1).map{index =>
-      text(index).split(",").map(Perceptron(_)).toList
-    }.toList
-    val outputPerceptrons : List[Perceptron] = text(outputIndex+1).split(",").toList.map(Perceptron(_))
-
-    val synapsis : List[Connection] = (synapsisIndex+1 to text.size-1).map{index =>
-      var splittedStr = text(index).split(",")
-      Connection(splittedStr(0), splittedStr(1), splittedStr(2).toDouble)
-    }.toList
-    */
-
     var hiddenLayer = hiddenPerceptrons.zipWithIndex.map { perceptronList =>
       new Layer(s"hidden_layer_${perceptronList._2}", perceptronList._1)
     }
@@ -367,11 +360,31 @@ object NeuralNetwork {
     }
     outputLayer.setPreviousLayer(hiddenLayer.last)
 
-
     var network = Network("neuralNetwork", inputLayer, hiddenLayer, outputLayer)
     synapsis.foreach { con =>
       network.addConnection(con)
+    }*/
+
+    val mapper = new ObjectMapper()
+    mapper.registerModule(DefaultScalaModule)
+
+    var network = mapper.readValue(new FileReader("weight.json"),classOf[Network])
+
+    network.inputLayer.nextLayer = network.hiddenLayer.head
+    network.hiddenLayer.zipWithIndex.foreach { layer =>
+      if (network.hiddenLayer.size == 1) {
+        layer._1.setNextLayer(network.outputLayer)
+        layer._1.setPreviousLayer(network.inputLayer)
+      } else if (layer._2 == 0) {
+        layer._1.setNextLayer(network.hiddenLayer(layer._2 + 1))
+        layer._1.setPreviousLayer(network.inputLayer)
+      }
+      else {
+        layer._1.setNextLayer(network.outputLayer)
+        layer._1.setPreviousLayer(network.hiddenLayer(layer._2 - 1))
+      }
     }
+    network.outputLayer.setPreviousLayer(network.hiddenLayer.last)
 
     network
 
