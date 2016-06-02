@@ -721,7 +721,25 @@ object Main extends App {
       |897471,4,8,8,5,4,5,10,4,1,4
     """.stripMargin.trim
 
-  val array = text.split("\n").map(_.split(","))
+  val playtennis =
+    """
+      |sunny,hot,high,FALSE,no
+      |sunny,hot,high,TRUE,no
+      |overcast,hot,high,FALSE,yes
+      |rainy,mild,high,FALSE,yes
+      |rainy,cool,normal,FALSE,yes
+      |rainy,cool,normal,TRUE,no
+      |overcast,cool,normal,TRUE,yes
+      |sunny,mild,high,FALSE,no
+      |sunny,cool,normal,FALSE,yes
+      |rainy,mild,normal,FALSE,yes
+      |sunny,mild,normal,TRUE,yes
+      |overcast,mild,high,TRUE,yes
+      |overcast,hot,normal,FALSE,yes
+      |rainy,mild,high,TRUE,no
+    """.stripMargin.trim
+
+  val array = playtennis.split("\n").map(_.split(","))
   require(array.length > 0)
 
   val zip = (0 until array(0).length).map {
@@ -736,22 +754,25 @@ object Main extends App {
 
   val learningRate = 0.05
   val nInput = numericArray(0).size - 1
-  val nHidden : List[Int] = Array(4).toList
+  val nHidden : List[Int] = Array(4,4).toList
   val nOutput = 1
   val momentum = 0.9
-  val maxIter = 10
+  val maxIter = 100000
+  val minMSE = 0.000001
+  val weightGeneratorOption = "minus0.5to0.5"
+  val activationFunctionOption = "sigmoid"
 
-  var network = NeuralNetwork.initiateNetwork(numericArray, learningRate, nInput, nHidden, nOutput)
+  var network = NeuralNetwork.initiateNetwork(numericArray, learningRate, nInput, nHidden, nOutput, weightGeneratorOption, activationFunctionOption)
 
   var trainedNetwork = network
   val file = new File("weight.json")
   if(!file.exists()) {
-    trainedNetwork = NeuralNetwork.initiateTraining(network, numericArray, learningRate, momentum, maxIter, 1)
+    trainedNetwork = NeuralNetwork.initiateTraining(network, numericArray, learningRate, momentum, maxIter, minMSE)
     NeuralNetwork.saveNetwork(trainedNetwork)
   }else{
     trainedNetwork = NeuralNetwork.loadNetwork
   }
-  
+
   val classified = numericArray.zipWithIndex.map { item =>
     println(s"expected : ${item._1.last}, prediction : ${NeuralNetwork.feedForward(trainedNetwork, item._1).head}")
     if (item._1.last == NeuralNetwork.feedForward(trainedNetwork, item._1).head.round.toInt) true else false
