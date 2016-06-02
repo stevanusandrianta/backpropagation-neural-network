@@ -757,10 +757,10 @@ object Main extends App {
   val nHidden : List[Int] = Array(4,4).toList
   val nOutput = 1
   val momentum = 0.9
-  val maxIter = 100000
+  val maxIter = 10000
   val minMSE = 0.000001
   val weightGenerator = WeightGenerator1
-  val activationFunction = Sigmoid
+  val activationFunction = new Sigmoid
 
   var network = NeuralNetwork.initiateNetwork(numericArray, learningRate, nInput, nHidden, nOutput, weightGenerator, activationFunction)
 

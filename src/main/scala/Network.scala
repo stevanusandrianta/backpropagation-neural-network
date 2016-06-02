@@ -1,4 +1,4 @@
-import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.{JsonIgnore, JsonIgnoreProperties}
 
 /**
   * Created by stevanus.andrianta on 6/2/2016.
@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 case class Network(networkId: String,
                    layers: List[Layer],
                    synapises: List[Synapsis],
-                   @JsonIgnore activationFunction: ActivationFunctionTrait) {
+                   activationFunction: ActivationFunctionTrait) {
 
   layers.foreach(_.owner = this)
 

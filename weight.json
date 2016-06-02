@@ -1,0 +1,1126 @@
+{
+  "networkId": "neuralNetwork",
+  "layers": [
+    {
+      "layerId": "layer4",
+      "nextLayerId": null,
+      "prevLayerId": "layer3",
+      "perceptron": [
+        {
+          "perceptronId": "layer_4_perceptron_0",
+          "activation": 0.0366206141443808,
+          "error": -0.0012951382631022858,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_4_perceptron_bias",
+          "activation": 1.0,
+          "error": -0.0,
+          "isBias": true
+        }
+      ]
+    },
+    {
+      "layerId": "layer3",
+      "nextLayerId": "layer4",
+      "prevLayerId": "layer2",
+      "perceptron": [
+        {
+          "perceptronId": "layer_3_perceptron_0",
+          "activation": 0.1747250723489336,
+          "error": -0.0010214064823145354,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_3_perceptron_1",
+          "activation": 0.1877745429319421,
+          "error": -7.457894901437082E-4,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_3_perceptron_2",
+          "activation": 0.18648274113792637,
+          "error": -8.231841181023217E-4,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_3_perceptron_3",
+          "activation": 0.18079605217641392,
+          "error": -9.40296723500461E-4,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_3_perceptron_bias",
+          "activation": 1.0,
+          "error": 0.0,
+          "isBias": true
+        }
+      ]
+    },
+    {
+      "layerId": "layer2",
+      "nextLayerId": "layer3",
+      "prevLayerId": "layer1",
+      "perceptron": [
+        {
+          "perceptronId": "layer_2_perceptron_0",
+          "activation": 0.0023676183207420715,
+          "error": 2.4122531984425733E-5,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_2_perceptron_1",
+          "activation": 0.6519937377937046,
+          "error": 0.002070066501424224,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_2_perceptron_2",
+          "activation": 0.00490183569041058,
+          "error": 3.823602936160358E-5,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_2_perceptron_3",
+          "activation": 0.6535405507060186,
+          "error": 0.001921897896083019,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_2_perceptron_bias",
+          "activation": 1.0,
+          "error": -0.0,
+          "isBias": true
+        }
+      ]
+    },
+    {
+      "layerId": "layer1",
+      "nextLayerId": "layer2",
+      "prevLayerId": null,
+      "perceptron": [
+        {
+          "perceptronId": "layer_1_perceptron_0",
+          "activation": 1.0,
+          "error": 0.0,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_1_perceptron_1",
+          "activation": 0.5,
+          "error": 9.57004306802593E-5,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_1_perceptron_2",
+          "activation": 0.0,
+          "error": -0.0,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_1_perceptron_3",
+          "activation": 1.0,
+          "error": 0.0,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_1_perceptron_bias",
+          "activation": 1.0,
+          "error": -0.0,
+          "isBias": true
+        }
+      ]
+    }
+  ],
+  "synapises": [
+    {
+      "fromId": "layer_3_perceptron_0",
+      "toId": "layer_4_perceptron_0",
+      "weight": 5.467412279429394,
+      "lastDeltaWeight": -1.131947883305695E-5
+    },
+    {
+      "fromId": "layer_3_perceptron_0",
+      "toId": "layer_4_perceptron_bias",
+      "weight": -0.011127957854372122,
+      "lastDeltaWeight": -0.0
+    },
+    {
+      "fromId": "layer_3_perceptron_1",
+      "toId": "layer_4_perceptron_0",
+      "weight": 3.7747073857123374,
+      "lastDeltaWeight": -1.2163419708797268E-5
+    },
+    {
+      "fromId": "layer_3_perceptron_1",
+      "toId": "layer_4_perceptron_bias",
+      "weight": 0.028705374407748663,
+      "lastDeltaWeight": -0.0
+    },
+    {
+      "fromId": "layer_3_perceptron_2",
+      "toId": "layer_4_perceptron_0",
+      "weight": 4.1885362093997625,
+      "lastDeltaWeight": -1.2080084727734534E-5
+    },
+    {
+      "fromId": "layer_3_perceptron_2",
+      "toId": "layer_4_perceptron_bias",
+      "weight": -0.012687882706897594,
+      "lastDeltaWeight": -0.0
+    },
+    {
+      "fromId": "layer_3_perceptron_3",
+      "toId": "layer_4_perceptron_0",
+      "weight": 4.900452389626157,
+      "lastDeltaWeight": -1.1712313132733197E-5
+    },
+    {
+      "fromId": "layer_3_perceptron_3",
+      "toId": "layer_4_perceptron_bias",
+      "weight": -0.015482452062422311,
+      "lastDeltaWeight": -0.0
+    },
+    {
+      "fromId": "layer_3_perceptron_bias",
+      "toId": "layer_4_perceptron_0",
+      "weight": -6.600996106585587,
+      "lastDeltaWeight": -6.47569131551143E-5
+    },
+    {
+      "fromId": "layer_3_perceptron_bias",
+      "toId": "layer_4_perceptron_bias",
+      "weight": -0.011436642968726055,
+      "lastDeltaWeight": -0.0
+    },
+    {
+      "fromId": "layer_2_perceptron_0",
+      "toId": "layer_3_perceptron_0",
+      "weight": -3.27111283230963,
+      "lastDeltaWeight": -1.209145622483923E-7
+    },
+    {
+      "fromId": "layer_2_perceptron_0",
+      "toId": "layer_3_perceptron_1",
+      "weight": -2.458386709612178,
+      "lastDeltaWeight": -8.82868978135277E-8
+    },
+    {
+      "fromId": "layer_2_perceptron_0",
+      "toId": "layer_3_perceptron_2",
+      "weight": -2.6786286729010533,
+      "lastDeltaWeight": -9.744890894428449E-8
+    },
+    {
+      "fromId": "layer_2_perceptron_0",
+      "toId": "layer_3_perceptron_3",
+      "weight": -3.0130519284506656,
+      "lastDeltaWeight": -1.1131275224337573E-7
+    },
+    {
+      "fromId": "layer_2_perceptron_0",
+      "toId": "layer_3_perceptron_bias",
+      "weight": -0.029976227329240546,
+      "lastDeltaWeight": 0.0
+    },
+    {
+      "fromId": "layer_2_perceptron_1",
+      "toId": "layer_3_perceptron_0",
+      "weight": -2.9567466722017888,
+      "lastDeltaWeight": -3.329363338833457E-5
+    },
+    {
+      "fromId": "layer_2_perceptron_1",
+      "toId": "layer_3_perceptron_1",
+      "weight": -2.15133792785178,
+      "lastDeltaWeight": -2.4309657613932527E-5
+    },
+    {
+      "fromId": "layer_2_perceptron_1",
+      "toId": "layer_3_perceptron_2",
+      "weight": -2.345663228039991,
+      "lastDeltaWeight": -2.683240288145975E-5
+    },
+    {
+      "fromId": "layer_2_perceptron_1",
+      "toId": "layer_3_perceptron_3",
+      "weight": -2.7301076646838185,
+      "lastDeltaWeight": -3.064979019668695E-5
+    },
+    {
+      "fromId": "layer_2_perceptron_1",
+      "toId": "layer_3_perceptron_bias",
+      "weight": 0.023820079002037465,
+      "lastDeltaWeight": 0.0
+    },
+    {
+      "fromId": "layer_2_perceptron_2",
+      "toId": "layer_3_perceptron_0",
+      "weight": -2.513140770212239,
+      "lastDeltaWeight": -2.5033678977182643E-7
+    },
+    {
+      "fromId": "layer_2_perceptron_2",
+      "toId": "layer_3_perceptron_1",
+      "weight": -1.9190386393959076,
+      "lastDeltaWeight": -1.8278574694873586E-7
+    },
+    {
+      "fromId": "layer_2_perceptron_2",
+      "toId": "layer_3_perceptron_2",
+      "weight": -2.041554562124409,
+      "lastDeltaWeight": -2.0175441715419655E-7
+    },
+    {
+      "fromId": "layer_2_perceptron_2",
+      "toId": "layer_3_perceptron_3",
+      "weight": -2.2972642129842433,
+      "lastDeltaWeight": -2.3045757714467398E-7
+    },
+    {
+      "fromId": "layer_2_perceptron_2",
+      "toId": "layer_3_perceptron_bias",
+      "weight": -0.009655373595966396,
+      "lastDeltaWeight": 0.0
+    },
+    {
+      "fromId": "layer_2_perceptron_3",
+      "toId": "layer_3_perceptron_0",
+      "weight": -2.7715498715856257,
+      "lastDeltaWeight": -3.3372916202392564E-5
+    },
+    {
+      "fromId": "layer_2_perceptron_3",
+      "toId": "layer_3_perceptron_1",
+      "weight": -2.025777614250115,
+      "lastDeltaWeight": -2.4367546701673074E-5
+    },
+    {
+      "fromId": "layer_2_perceptron_3",
+      "toId": "layer_3_perceptron_2",
+      "weight": -2.200759504221966,
+      "lastDeltaWeight": -2.689629943440027E-5
+    },
+    {
+      "fromId": "layer_2_perceptron_3",
+      "toId": "layer_3_perceptron_3",
+      "weight": -2.4821700498616943,
+      "lastDeltaWeight": -3.072277717256721E-5
+    },
+    {
+      "fromId": "layer_2_perceptron_3",
+      "toId": "layer_3_perceptron_bias",
+      "weight": -0.04878066497361762,
+      "lastDeltaWeight": 0.0
+    },
+    {
+      "fromId": "layer_2_perceptron_bias",
+      "toId": "layer_3_perceptron_0",
+      "weight": 2.206661440674578,
+      "lastDeltaWeight": -5.1070324115726775E-5
+    },
+    {
+      "fromId": "layer_2_perceptron_bias",
+      "toId": "layer_3_perceptron_1",
+      "weight": 1.2772780533022554,
+      "lastDeltaWeight": -3.728947450718542E-5
+    },
+    {
+      "fromId": "layer_2_perceptron_bias",
+      "toId": "layer_3_perceptron_2",
+      "weight": 1.5109642013400535,
+      "lastDeltaWeight": -4.115920590511609E-5
+    },
+    {
+      "fromId": "layer_2_perceptron_bias",
+      "toId": "layer_3_perceptron_3",
+      "weight": 1.9096429898837157,
+      "lastDeltaWeight": -4.7014836175023056E-5
+    },
+    {
+      "fromId": "layer_2_perceptron_bias",
+      "toId": "layer_3_perceptron_bias",
+      "weight": -0.026144706807935014,
+      "lastDeltaWeight": 0.0
+    },
+    {
+      "fromId": "layer_1_perceptron_0",
+      "toId": "layer_2_perceptron_0",
+      "weight": -6.1024172414967435,
+      "lastDeltaWeight": 1.2061265992212867E-6
+    },
+    {
+      "fromId": "layer_1_perceptron_0",
+      "toId": "layer_2_perceptron_1",
+      "weight": 3.141641788947875,
+      "lastDeltaWeight": 1.035033250712112E-4
+    },
+    {
+      "fromId": "layer_1_perceptron_0",
+      "toId": "layer_2_perceptron_2",
+      "weight": -4.918571499268163,
+      "lastDeltaWeight": 1.911801468080179E-6
+    },
+    {
+      "fromId": "layer_1_perceptron_0",
+      "toId": "layer_2_perceptron_3",
+      "weight": 3.3551987554175335,
+      "lastDeltaWeight": 9.609489480415096E-5
+    },
+    {
+      "fromId": "layer_1_perceptron_0",
+      "toId": "layer_2_perceptron_bias",
+      "weight": -0.04472249993942311,
+      "lastDeltaWeight": -0.0
+    },
+    {
+      "fromId": "layer_1_perceptron_1",
+      "toId": "layer_2_perceptron_0",
+      "weight": -1.3624925902414327,
+      "lastDeltaWeight": 6.030632996106434E-7
+    },
+    {
+      "fromId": "layer_1_perceptron_1",
+      "toId": "layer_2_perceptron_1",
+      "weight": 0.1840553067027209,
+      "lastDeltaWeight": 5.17516625356056E-5
+    },
+    {
+      "fromId": "layer_1_perceptron_1",
+      "toId": "layer_2_perceptron_2",
+      "weight": -1.1060880100863473,
+      "lastDeltaWeight": 9.559007340400896E-7
+    },
+    {
+      "fromId": "layer_1_perceptron_1",
+      "toId": "layer_2_perceptron_3",
+      "weight": 0.04014453918118351,
+      "lastDeltaWeight": 4.804744740207548E-5
+    },
+    {
+      "fromId": "layer_1_perceptron_1",
+      "toId": "layer_2_perceptron_bias",
+      "weight": -0.0353594613182318,
+      "lastDeltaWeight": -0.0
+    },
+    {
+      "fromId": "layer_1_perceptron_2",
+      "toId": "layer_2_perceptron_0",
+      "weight": -3.1517392932961807,
+      "lastDeltaWeight": 0.0
+    },
+    {
+      "fromId": "layer_1_perceptron_2",
+      "toId": "layer_2_perceptron_1",
+      "weight": 0.007994057948822549,
+      "lastDeltaWeight": 0.0
+    },
+    {
+      "fromId": "layer_1_perceptron_2",
+      "toId": "layer_2_perceptron_2",
+      "weight": -3.146932669486927,
+      "lastDeltaWeight": 0.0
+    },
+    {
+      "fromId": "layer_1_perceptron_2",
+      "toId": "layer_2_perceptron_3",
+      "weight": 0.011682925468175598,
+      "lastDeltaWeight": 0.0
+    },
+    {
+      "fromId": "layer_1_perceptron_2",
+      "toId": "layer_2_perceptron_bias",
+      "weight": -0.007044496732482655,
+      "lastDeltaWeight": -0.0
+    },
+    {
+      "fromId": "layer_1_perceptron_3",
+      "toId": "layer_2_perceptron_0",
+      "weight": -0.950917127595696,
+      "lastDeltaWeight": 1.2061265992212867E-6
+    },
+    {
+      "fromId": "layer_1_perceptron_3",
+      "toId": "layer_2_perceptron_1",
+      "weight": 1.8574454430028264,
+      "lastDeltaWeight": 1.035033250712112E-4
+    },
+    {
+      "fromId": "layer_1_perceptron_3",
+      "toId": "layer_2_perceptron_2",
+      "weight": -0.824402987987643,
+      "lastDeltaWeight": 1.911801468080179E-6
+    },
+    {
+      "fromId": "layer_1_perceptron_3",
+      "toId": "layer_2_perceptron_3",
+      "weight": 1.4207974022565266,
+      "lastDeltaWeight": 9.609489480415096E-5
+    },
+    {
+      "fromId": "layer_1_perceptron_3",
+      "toId": "layer_2_perceptron_bias",
+      "weight": -0.013061783122855289,
+      "lastDeltaWeight": -0.0
+    },
+    {
+      "fromId": "layer_1_perceptron_bias",
+      "toId": "layer_2_perceptron_0",
+      "weight": 1.6910803327033421,
+      "lastDeltaWeight": 1.2061265992212867E-6
+    },
+    {
+      "fromId": "layer_1_perceptron_bias",
+      "toId": "layer_2_perceptron_1",
+      "weight": -4.4633004024906615,
+      "lastDeltaWeight": 1.035033250712112E-4
+    },
+    {
+      "fromId": "layer_1_perceptron_bias",
+      "toId": "layer_2_perceptron_2",
+      "weight": 0.9827868680652101,
+      "lastDeltaWeight": 1.911801468080179E-6
+    },
+    {
+      "fromId": "layer_1_perceptron_bias",
+      "toId": "layer_2_perceptron_3",
+      "weight": -4.1614296268746855,
+      "lastDeltaWeight": 9.609489480415096E-5
+    },
+    {
+      "fromId": "layer_1_perceptron_bias",
+      "toId": "layer_2_perceptron_bias",
+      "weight": -0.001999895123769746,
+      "lastDeltaWeight": -0.0
+    }
+  ],
+  "activationFunction": {
+    "type": "sigmoid"
+  },
+  "inputLayer": {
+    "layerId": "layer1",
+    "nextLayerId": "layer2",
+    "prevLayerId": null,
+    "perceptron": [
+      {
+        "perceptronId": "layer_1_perceptron_0",
+        "activation": 1.0,
+        "error": 0.0,
+        "isBias": false
+      },
+      {
+        "perceptronId": "layer_1_perceptron_1",
+        "activation": 0.5,
+        "error": 9.57004306802593E-5,
+        "isBias": false
+      },
+      {
+        "perceptronId": "layer_1_perceptron_2",
+        "activation": 0.0,
+        "error": -0.0,
+        "isBias": false
+      },
+      {
+        "perceptronId": "layer_1_perceptron_3",
+        "activation": 1.0,
+        "error": 0.0,
+        "isBias": false
+      },
+      {
+        "perceptronId": "layer_1_perceptron_bias",
+        "activation": 1.0,
+        "error": -0.0,
+        "isBias": true
+      }
+    ]
+  },
+  "hiddenLayer": [
+    {
+      "layerId": "layer3",
+      "nextLayerId": "layer4",
+      "prevLayerId": "layer2",
+      "perceptron": [
+        {
+          "perceptronId": "layer_3_perceptron_0",
+          "activation": 0.1747250723489336,
+          "error": -0.0010214064823145354,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_3_perceptron_1",
+          "activation": 0.1877745429319421,
+          "error": -7.457894901437082E-4,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_3_perceptron_2",
+          "activation": 0.18648274113792637,
+          "error": -8.231841181023217E-4,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_3_perceptron_3",
+          "activation": 0.18079605217641392,
+          "error": -9.40296723500461E-4,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_3_perceptron_bias",
+          "activation": 1.0,
+          "error": 0.0,
+          "isBias": true
+        }
+      ]
+    },
+    {
+      "layerId": "layer2",
+      "nextLayerId": "layer3",
+      "prevLayerId": "layer1",
+      "perceptron": [
+        {
+          "perceptronId": "layer_2_perceptron_0",
+          "activation": 0.0023676183207420715,
+          "error": 2.4122531984425733E-5,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_2_perceptron_1",
+          "activation": 0.6519937377937046,
+          "error": 0.002070066501424224,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_2_perceptron_2",
+          "activation": 0.00490183569041058,
+          "error": 3.823602936160358E-5,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_2_perceptron_3",
+          "activation": 0.6535405507060186,
+          "error": 0.001921897896083019,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_2_perceptron_bias",
+          "activation": 1.0,
+          "error": -0.0,
+          "isBias": true
+        }
+      ]
+    }
+  ],
+  "outputLayer": {
+    "layerId": "layer4",
+    "nextLayerId": null,
+    "prevLayerId": "layer3",
+    "perceptron": [
+      {
+        "perceptronId": "layer_4_perceptron_0",
+        "activation": 0.0366206141443808,
+        "error": -0.0012951382631022858,
+        "isBias": false
+      },
+      {
+        "perceptronId": "layer_4_perceptron_bias",
+        "activation": 1.0,
+        "error": -0.0,
+        "isBias": true
+      }
+    ]
+  },
+  "orderedLayer": [
+    {
+      "layerId": "layer1",
+      "nextLayerId": "layer2",
+      "prevLayerId": null,
+      "perceptron": [
+        {
+          "perceptronId": "layer_1_perceptron_0",
+          "activation": 1.0,
+          "error": 0.0,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_1_perceptron_1",
+          "activation": 0.5,
+          "error": 9.57004306802593E-5,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_1_perceptron_2",
+          "activation": 0.0,
+          "error": -0.0,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_1_perceptron_3",
+          "activation": 1.0,
+          "error": 0.0,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_1_perceptron_bias",
+          "activation": 1.0,
+          "error": -0.0,
+          "isBias": true
+        }
+      ]
+    },
+    {
+      "layerId": "layer2",
+      "nextLayerId": "layer3",
+      "prevLayerId": "layer1",
+      "perceptron": [
+        {
+          "perceptronId": "layer_2_perceptron_0",
+          "activation": 0.0023676183207420715,
+          "error": 2.4122531984425733E-5,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_2_perceptron_1",
+          "activation": 0.6519937377937046,
+          "error": 0.002070066501424224,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_2_perceptron_2",
+          "activation": 0.00490183569041058,
+          "error": 3.823602936160358E-5,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_2_perceptron_3",
+          "activation": 0.6535405507060186,
+          "error": 0.001921897896083019,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_2_perceptron_bias",
+          "activation": 1.0,
+          "error": -0.0,
+          "isBias": true
+        }
+      ]
+    },
+    {
+      "layerId": "layer3",
+      "nextLayerId": "layer4",
+      "prevLayerId": "layer2",
+      "perceptron": [
+        {
+          "perceptronId": "layer_3_perceptron_0",
+          "activation": 0.1747250723489336,
+          "error": -0.0010214064823145354,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_3_perceptron_1",
+          "activation": 0.1877745429319421,
+          "error": -7.457894901437082E-4,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_3_perceptron_2",
+          "activation": 0.18648274113792637,
+          "error": -8.231841181023217E-4,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_3_perceptron_3",
+          "activation": 0.18079605217641392,
+          "error": -9.40296723500461E-4,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_3_perceptron_bias",
+          "activation": 1.0,
+          "error": 0.0,
+          "isBias": true
+        }
+      ]
+    },
+    {
+      "layerId": "layer4",
+      "nextLayerId": null,
+      "prevLayerId": "layer3",
+      "perceptron": [
+        {
+          "perceptronId": "layer_4_perceptron_0",
+          "activation": 0.0366206141443808,
+          "error": -0.0012951382631022858,
+          "isBias": false
+        },
+        {
+          "perceptronId": "layer_4_perceptron_bias",
+          "activation": 1.0,
+          "error": -0.0,
+          "isBias": true
+        }
+      ]
+    }
+  ],
+  "synapsisMap": {
+    "layer_1_perceptron_0_layer_2_perceptron_0": {
+      "fromId": "layer_1_perceptron_0",
+      "toId": "layer_2_perceptron_0",
+      "weight": -6.1024172414967435,
+      "lastDeltaWeight": 1.2061265992212867E-6
+    },
+    "layer_2_perceptron_0_layer_3_perceptron_2": {
+      "fromId": "layer_2_perceptron_0",
+      "toId": "layer_3_perceptron_2",
+      "weight": -2.6786286729010533,
+      "lastDeltaWeight": -9.744890894428449E-8
+    },
+    "layer_1_perceptron_2_layer_2_perceptron_1": {
+      "fromId": "layer_1_perceptron_2",
+      "toId": "layer_2_perceptron_1",
+      "weight": 0.007994057948822549,
+      "lastDeltaWeight": 0.0
+    },
+    "layer_1_perceptron_3_layer_2_perceptron_0": {
+      "fromId": "layer_1_perceptron_3",
+      "toId": "layer_2_perceptron_0",
+      "weight": -0.950917127595696,
+      "lastDeltaWeight": 1.2061265992212867E-6
+    },
+    "layer_2_perceptron_bias_layer_3_perceptron_1": {
+      "fromId": "layer_2_perceptron_bias",
+      "toId": "layer_3_perceptron_1",
+      "weight": 1.2772780533022554,
+      "lastDeltaWeight": -3.728947450718542E-5
+    },
+    "layer_2_perceptron_1_layer_3_perceptron_0": {
+      "fromId": "layer_2_perceptron_1",
+      "toId": "layer_3_perceptron_0",
+      "weight": -2.9567466722017888,
+      "lastDeltaWeight": -3.329363338833457E-5
+    },
+    "layer_2_perceptron_bias_layer_3_perceptron_2": {
+      "fromId": "layer_2_perceptron_bias",
+      "toId": "layer_3_perceptron_2",
+      "weight": 1.5109642013400535,
+      "lastDeltaWeight": -4.115920590511609E-5
+    },
+    "layer_1_perceptron_bias_layer_2_perceptron_3": {
+      "fromId": "layer_1_perceptron_bias",
+      "toId": "layer_2_perceptron_3",
+      "weight": -4.1614296268746855,
+      "lastDeltaWeight": 9.609489480415096E-5
+    },
+    "layer_1_perceptron_3_layer_2_perceptron_bias": {
+      "fromId": "layer_1_perceptron_3",
+      "toId": "layer_2_perceptron_bias",
+      "weight": -0.013061783122855289,
+      "lastDeltaWeight": -0.0
+    },
+    "layer_2_perceptron_3_layer_3_perceptron_1": {
+      "fromId": "layer_2_perceptron_3",
+      "toId": "layer_3_perceptron_1",
+      "weight": -2.025777614250115,
+      "lastDeltaWeight": -2.4367546701673074E-5
+    },
+    "layer_1_perceptron_bias_layer_2_perceptron_bias": {
+      "fromId": "layer_1_perceptron_bias",
+      "toId": "layer_2_perceptron_bias",
+      "weight": -0.001999895123769746,
+      "lastDeltaWeight": -0.0
+    },
+    "layer_1_perceptron_1_layer_2_perceptron_1": {
+      "fromId": "layer_1_perceptron_1",
+      "toId": "layer_2_perceptron_1",
+      "weight": 0.1840553067027209,
+      "lastDeltaWeight": 5.17516625356056E-5
+    },
+    "layer_2_perceptron_2_layer_3_perceptron_0": {
+      "fromId": "layer_2_perceptron_2",
+      "toId": "layer_3_perceptron_0",
+      "weight": -2.513140770212239,
+      "lastDeltaWeight": -2.5033678977182643E-7
+    },
+    "layer_2_perceptron_2_layer_3_perceptron_3": {
+      "fromId": "layer_2_perceptron_2",
+      "toId": "layer_3_perceptron_3",
+      "weight": -2.2972642129842433,
+      "lastDeltaWeight": -2.3045757714467398E-7
+    },
+    "layer_2_perceptron_3_layer_3_perceptron_bias": {
+      "fromId": "layer_2_perceptron_3",
+      "toId": "layer_3_perceptron_bias",
+      "weight": -0.04878066497361762,
+      "lastDeltaWeight": 0.0
+    },
+    "layer_1_perceptron_2_layer_2_perceptron_bias": {
+      "fromId": "layer_1_perceptron_2",
+      "toId": "layer_2_perceptron_bias",
+      "weight": -0.007044496732482655,
+      "lastDeltaWeight": -0.0
+    },
+    "layer_2_perceptron_1_layer_3_perceptron_1": {
+      "fromId": "layer_2_perceptron_1",
+      "toId": "layer_3_perceptron_1",
+      "weight": -2.15133792785178,
+      "lastDeltaWeight": -2.4309657613932527E-5
+    },
+    "layer_3_perceptron_0_layer_4_perceptron_bias": {
+      "fromId": "layer_3_perceptron_0",
+      "toId": "layer_4_perceptron_bias",
+      "weight": -0.011127957854372122,
+      "lastDeltaWeight": -0.0
+    },
+    "layer_1_perceptron_2_layer_2_perceptron_2": {
+      "fromId": "layer_1_perceptron_2",
+      "toId": "layer_2_perceptron_2",
+      "weight": -3.146932669486927,
+      "lastDeltaWeight": 0.0
+    },
+    "layer_2_perceptron_bias_layer_3_perceptron_0": {
+      "fromId": "layer_2_perceptron_bias",
+      "toId": "layer_3_perceptron_0",
+      "weight": 2.206661440674578,
+      "lastDeltaWeight": -5.1070324115726775E-5
+    },
+    "layer_3_perceptron_3_layer_4_perceptron_0": {
+      "fromId": "layer_3_perceptron_3",
+      "toId": "layer_4_perceptron_0",
+      "weight": 4.900452389626157,
+      "lastDeltaWeight": -1.1712313132733197E-5
+    },
+    "layer_2_perceptron_0_layer_3_perceptron_bias": {
+      "fromId": "layer_2_perceptron_0",
+      "toId": "layer_3_perceptron_bias",
+      "weight": -0.029976227329240546,
+      "lastDeltaWeight": 0.0
+    },
+    "layer_2_perceptron_3_layer_3_perceptron_0": {
+      "fromId": "layer_2_perceptron_3",
+      "toId": "layer_3_perceptron_0",
+      "weight": -2.7715498715856257,
+      "lastDeltaWeight": -3.3372916202392564E-5
+    },
+    "layer_1_perceptron_3_layer_2_perceptron_1": {
+      "fromId": "layer_1_perceptron_3",
+      "toId": "layer_2_perceptron_1",
+      "weight": 1.8574454430028264,
+      "lastDeltaWeight": 1.035033250712112E-4
+    },
+    "layer_1_perceptron_bias_layer_2_perceptron_0": {
+      "fromId": "layer_1_perceptron_bias",
+      "toId": "layer_2_perceptron_0",
+      "weight": 1.6910803327033421,
+      "lastDeltaWeight": 1.2061265992212867E-6
+    },
+    "layer_3_perceptron_3_layer_4_perceptron_bias": {
+      "fromId": "layer_3_perceptron_3",
+      "toId": "layer_4_perceptron_bias",
+      "weight": -0.015482452062422311,
+      "lastDeltaWeight": -0.0
+    },
+    "layer_3_perceptron_1_layer_4_perceptron_0": {
+      "fromId": "layer_3_perceptron_1",
+      "toId": "layer_4_perceptron_0",
+      "weight": 3.7747073857123374,
+      "lastDeltaWeight": -1.2163419708797268E-5
+    },
+    "layer_3_perceptron_bias_layer_4_perceptron_0": {
+      "fromId": "layer_3_perceptron_bias",
+      "toId": "layer_4_perceptron_0",
+      "weight": -6.600996106585587,
+      "lastDeltaWeight": -6.47569131551143E-5
+    },
+    "layer_1_perceptron_1_layer_2_perceptron_0": {
+      "fromId": "layer_1_perceptron_1",
+      "toId": "layer_2_perceptron_0",
+      "weight": -1.3624925902414327,
+      "lastDeltaWeight": 6.030632996106434E-7
+    },
+    "layer_1_perceptron_2_layer_2_perceptron_0": {
+      "fromId": "layer_1_perceptron_2",
+      "toId": "layer_2_perceptron_0",
+      "weight": -3.1517392932961807,
+      "lastDeltaWeight": 0.0
+    },
+    "layer_2_perceptron_3_layer_3_perceptron_3": {
+      "fromId": "layer_2_perceptron_3",
+      "toId": "layer_3_perceptron_3",
+      "weight": -2.4821700498616943,
+      "lastDeltaWeight": -3.072277717256721E-5
+    },
+    "layer_2_perceptron_1_layer_3_perceptron_2": {
+      "fromId": "layer_2_perceptron_1",
+      "toId": "layer_3_perceptron_2",
+      "weight": -2.345663228039991,
+      "lastDeltaWeight": -2.683240288145975E-5
+    },
+    "layer_2_perceptron_1_layer_3_perceptron_bias": {
+      "fromId": "layer_2_perceptron_1",
+      "toId": "layer_3_perceptron_bias",
+      "weight": 0.023820079002037465,
+      "lastDeltaWeight": 0.0
+    },
+    "layer_2_perceptron_0_layer_3_perceptron_0": {
+      "fromId": "layer_2_perceptron_0",
+      "toId": "layer_3_perceptron_0",
+      "weight": -3.27111283230963,
+      "lastDeltaWeight": -1.209145622483923E-7
+    },
+    "layer_1_perceptron_0_layer_2_perceptron_2": {
+      "fromId": "layer_1_perceptron_0",
+      "toId": "layer_2_perceptron_2",
+      "weight": -4.918571499268163,
+      "lastDeltaWeight": 1.911801468080179E-6
+    },
+    "layer_1_perceptron_2_layer_2_perceptron_3": {
+      "fromId": "layer_1_perceptron_2",
+      "toId": "layer_2_perceptron_3",
+      "weight": 0.011682925468175598,
+      "lastDeltaWeight": 0.0
+    },
+    "layer_1_perceptron_bias_layer_2_perceptron_1": {
+      "fromId": "layer_1_perceptron_bias",
+      "toId": "layer_2_perceptron_1",
+      "weight": -4.4633004024906615,
+      "lastDeltaWeight": 1.035033250712112E-4
+    },
+    "layer_3_perceptron_1_layer_4_perceptron_bias": {
+      "fromId": "layer_3_perceptron_1",
+      "toId": "layer_4_perceptron_bias",
+      "weight": 0.028705374407748663,
+      "lastDeltaWeight": -0.0
+    },
+    "layer_3_perceptron_bias_layer_4_perceptron_bias": {
+      "fromId": "layer_3_perceptron_bias",
+      "toId": "layer_4_perceptron_bias",
+      "weight": -0.011436642968726055,
+      "lastDeltaWeight": -0.0
+    },
+    "layer_2_perceptron_bias_layer_3_perceptron_bias": {
+      "fromId": "layer_2_perceptron_bias",
+      "toId": "layer_3_perceptron_bias",
+      "weight": -0.026144706807935014,
+      "lastDeltaWeight": 0.0
+    },
+    "layer_1_perceptron_1_layer_2_perceptron_3": {
+      "fromId": "layer_1_perceptron_1",
+      "toId": "layer_2_perceptron_3",
+      "weight": 0.04014453918118351,
+      "lastDeltaWeight": 4.804744740207548E-5
+    },
+    "layer_1_perceptron_3_layer_2_perceptron_2": {
+      "fromId": "layer_1_perceptron_3",
+      "toId": "layer_2_perceptron_2",
+      "weight": -0.824402987987643,
+      "lastDeltaWeight": 1.911801468080179E-6
+    },
+    "layer_2_perceptron_2_layer_3_perceptron_1": {
+      "fromId": "layer_2_perceptron_2",
+      "toId": "layer_3_perceptron_1",
+      "weight": -1.9190386393959076,
+      "lastDeltaWeight": -1.8278574694873586E-7
+    },
+    "layer_1_perceptron_0_layer_2_perceptron_3": {
+      "fromId": "layer_1_perceptron_0",
+      "toId": "layer_2_perceptron_3",
+      "weight": 3.3551987554175335,
+      "lastDeltaWeight": 9.609489480415096E-5
+    },
+    "layer_3_perceptron_2_layer_4_perceptron_0": {
+      "fromId": "layer_3_perceptron_2",
+      "toId": "layer_4_perceptron_0",
+      "weight": 4.1885362093997625,
+      "lastDeltaWeight": -1.2080084727734534E-5
+    },
+    "layer_3_perceptron_2_layer_4_perceptron_bias": {
+      "fromId": "layer_3_perceptron_2",
+      "toId": "layer_4_perceptron_bias",
+      "weight": -0.012687882706897594,
+      "lastDeltaWeight": -0.0
+    },
+    "layer_2_perceptron_0_layer_3_perceptron_3": {
+      "fromId": "layer_2_perceptron_0",
+      "toId": "layer_3_perceptron_3",
+      "weight": -3.0130519284506656,
+      "lastDeltaWeight": -1.1131275224337573E-7
+    },
+    "layer_2_perceptron_2_layer_3_perceptron_bias": {
+      "fromId": "layer_2_perceptron_2",
+      "toId": "layer_3_perceptron_bias",
+      "weight": -0.009655373595966396,
+      "lastDeltaWeight": 0.0
+    },
+    "layer_2_perceptron_0_layer_3_perceptron_1": {
+      "fromId": "layer_2_perceptron_0",
+      "toId": "layer_3_perceptron_1",
+      "weight": -2.458386709612178,
+      "lastDeltaWeight": -8.82868978135277E-8
+    },
+    "layer_1_perceptron_1_layer_2_perceptron_bias": {
+      "fromId": "layer_1_perceptron_1",
+      "toId": "layer_2_perceptron_bias",
+      "weight": -0.0353594613182318,
+      "lastDeltaWeight": -0.0
+    },
+    "layer_2_perceptron_3_layer_3_perceptron_2": {
+      "fromId": "layer_2_perceptron_3",
+      "toId": "layer_3_perceptron_2",
+      "weight": -2.200759504221966,
+      "lastDeltaWeight": -2.689629943440027E-5
+    },
+    "layer_2_perceptron_bias_layer_3_perceptron_3": {
+      "fromId": "layer_2_perceptron_bias",
+      "toId": "layer_3_perceptron_3",
+      "weight": 1.9096429898837157,
+      "lastDeltaWeight": -4.7014836175023056E-5
+    },
+    "layer_1_perceptron_0_layer_2_perceptron_1": {
+      "fromId": "layer_1_perceptron_0",
+      "toId": "layer_2_perceptron_1",
+      "weight": 3.141641788947875,
+      "lastDeltaWeight": 1.035033250712112E-4
+    },
+    "layer_1_perceptron_bias_layer_2_perceptron_2": {
+      "fromId": "layer_1_perceptron_bias",
+      "toId": "layer_2_perceptron_2",
+      "weight": 0.9827868680652101,
+      "lastDeltaWeight": 1.911801468080179E-6
+    },
+    "layer_3_perceptron_0_layer_4_perceptron_0": {
+      "fromId": "layer_3_perceptron_0",
+      "toId": "layer_4_perceptron_0",
+      "weight": 5.467412279429394,
+      "lastDeltaWeight": -1.131947883305695E-5
+    },
+    "layer_2_perceptron_2_layer_3_perceptron_2": {
+      "fromId": "layer_2_perceptron_2",
+      "toId": "layer_3_perceptron_2",
+      "weight": -2.041554562124409,
+      "lastDeltaWeight": -2.0175441715419655E-7
+    },
+    "layer_1_perceptron_1_layer_2_perceptron_2": {
+      "fromId": "layer_1_perceptron_1",
+      "toId": "layer_2_perceptron_2",
+      "weight": -1.1060880100863473,
+      "lastDeltaWeight": 9.559007340400896E-7
+    },
+    "layer_1_perceptron_0_layer_2_perceptron_bias": {
+      "fromId": "layer_1_perceptron_0",
+      "toId": "layer_2_perceptron_bias",
+      "weight": -0.04472249993942311,
+      "lastDeltaWeight": -0.0
+    },
+    "layer_1_perceptron_3_layer_2_perceptron_3": {
+      "fromId": "layer_1_perceptron_3",
+      "toId": "layer_2_perceptron_3",
+      "weight": 1.4207974022565266,
+      "lastDeltaWeight": 9.609489480415096E-5
+    },
+    "layer_2_perceptron_1_layer_3_perceptron_3": {
+      "fromId": "layer_2_perceptron_1",
+      "toId": "layer_3_perceptron_3",
+      "weight": -2.7301076646838185,
+      "lastDeltaWeight": -3.064979019668695E-5
+    }
+  }
+}
