@@ -759,10 +759,10 @@ object Main extends App {
   val momentum = 0.9
   val maxIter = 100000
   val minMSE = 0.000001
-  val weightGeneratorOption = "minus0.5to0.5"
-  val activationFunctionOption = "sigmoid"
+  val weightGenerator = WeightGenerator1
+  val activationFunction = Sigmoid
 
-  var network = NeuralNetwork.initiateNetwork(numericArray, learningRate, nInput, nHidden, nOutput, weightGeneratorOption, activationFunctionOption)
+  var network = NeuralNetwork.initiateNetwork(numericArray, learningRate, nInput, nHidden, nOutput, weightGenerator, activationFunction)
 
   var trainedNetwork = network
   val file = new File("weight.json")
