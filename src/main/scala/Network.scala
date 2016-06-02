@@ -1,10 +1,12 @@
+import com.fasterxml.jackson.annotation.JsonIgnore
+
 /**
   * Created by stevanus.andrianta on 6/2/2016.
   */
 case class Network(networkId: String,
                    layers: List[Layer],
                    synapises: List[Synapsis],
-                   activationFunction: ActivationFunction) {
+                   @JsonIgnore activationFunction: ActivationFunctionTrait) {
 
   layers.foreach(_.owner = this)
 
