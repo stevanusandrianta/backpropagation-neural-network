@@ -21,10 +21,7 @@ import scala.annotation.tailrec
 object NeuralNetwork {
 
   def initiateNetwork(dataInput: List[List[Double]], learningRate: Double, nInput: Int, nHidden: List[Int], nOutput: Int,
-                      weightGeneratorOption: String, activationFunctionOption: String): Network = {
-
-    val weightGenerator = WeightGenerator(weightGeneratorOption)
-    val activationFunction = ActivationFunction(activationFunctionOption)
+                      weightGenerator: WeightGeneratorTrait, activationFunction: ActivationFunctionTrait): Network = {
 
     Random.setSeed(Calendar.getInstance().getTimeInMillis)
 
@@ -72,7 +69,6 @@ object NeuralNetwork {
     val network = Network("neuralNetwork", layers, synapsises, activationFunction)
 
     network
-
   }
 
   def feedForward(network: Network, dataInput: List[Double]) = {
